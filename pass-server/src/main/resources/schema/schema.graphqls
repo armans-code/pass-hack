@@ -20,6 +20,7 @@ input CreateUserInput {
     lastName: String
     email: String
     phone: String
+    profilePicture: String
     authId: String!
 }
 
@@ -79,6 +80,7 @@ type Student {
     lastName: String
     email: String
     phone: String
+    profilePicture: String
     classrooms: [Classroom]
     createdAt: String
     updatedAt: String
@@ -90,6 +92,7 @@ type Teacher {
     lastName: String
     email: String
     phone: String
+    profilePicture: String
     classrooms: [Classroom]
     students: [Student]
     createdAt: String

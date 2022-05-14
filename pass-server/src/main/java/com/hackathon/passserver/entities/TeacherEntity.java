@@ -30,8 +30,9 @@ public class TeacherEntity extends BaseEntity {
     @Column(name = "phone", nullable = false)
     private String phone;
 
+    @Column(name = "profile_picture")
+    private String profilePicture;
+
     @OneToMany(mappedBy = "teacher")
     Set<ClassroomEntity> classrooms = new HashSet<>();
-
-
 }

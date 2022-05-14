@@ -1,29 +1,27 @@
 package com.hackathon.passserver.converters;
 
-import com.hackathon.passserver.entities.ClassroomEntity;
-import com.hackathon.passserver.entities.PassEntity;
 import com.hackathon.passserver.entities.PassType;
-import com.hackathon.passserver.entities.StudentEntity;
-import com.hackathon.passserver.entities.TeacherEntity;
+import com.hackathon.passserver.entities.*;
 import com.hackathon.passserver.graphql.types.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.Date;
 import java.util.stream.Collectors;
 
 public class Converters {
     public static Student convertStudent(StudentEntity studentEntity) {
-        return Student.newBuilder()
+        Student.Builder studentBuilder = Student.newBuilder()
                 .firstName(studentEntity.getFirstName())
                 .lastName(studentEntity.getLastName())
                 .email(studentEntity.getEmail())
                 .phone(studentEntity.getPhone())
                 .classrooms(studentEntity.getClassrooms().stream().map(Converters::convertClassroom).collect(Collectors.toList()))
                 .createdAt(studentEntity.getCreatedAt().toString())
-                .updatedAt(studentEntity.getUpdatedAt().toString())
-                .build();
+                .updatedAt(studentEntity.getUpdatedAt().toString());
+        if(!studentEntity.getProfilePicture().isEmpty())
+            studentBuilder.profilePicture(studentEntity.getProfilePicture());
+        return studentBuilder.build();
     }
 
     public static Classroom convertClassroom(ClassroomEntity classroomEntity) {
@@ -31,6 +29,7 @@ public class Converters {
                 .id(classroomEntity.getId().toString())
                 .name(classroomEntity.getName())
                 .teacher(convertTeacher(classroomEntity.getTeacher()))
+                .students(classroomEntity.getStudents().stream().map(Converters::convertStudent).collect(Collectors.toList()))
                 .code(classroomEntity.getCode())
                 .createdAt(classroomEntity.getCreatedAt().toString())
                 .updatedAt(classroomEntity.getUpdatedAt().toString())
@@ -38,14 +37,16 @@ public class Converters {
     }
 
     public static Teacher convertTeacher(TeacherEntity teacherEntity) {
-        return Teacher.newBuilder()
+        Teacher.Builder teacherBuilder = Teacher.newBuilder()
                 .id(teacherEntity.getId().toString())
                 .firstName(teacherEntity.getFirstName())
                 .lastName(teacherEntity.getLastName())
                 .classrooms(teacherEntity.getClassrooms().stream().map(Converters::convertClassroom).collect(Collectors.toList()))
                 .email(teacherEntity.getEmail())
-                .phone(teacherEntity.getPhone())
-                .build();
+                .phone(teacherEntity.getPhone());
+        if(!teacherEntity.getProfilePicture().isEmpty())
+            teacherBuilder.profilePicture(teacherEntity.getProfilePicture());
+        return teacherBuilder.build();
     }
 
     public static Pass convertPass(PassEntity passEntity) {
@@ -67,6 +68,8 @@ public class Converters {
         studentEntity.setAuthId(createUserInput.getAuthId());
         studentEntity.setEmail(createUserInput.getEmail());
         studentEntity.setPhone(createUserInput.getPhone());
+        if (!createUserInput.getProfilePicture().isEmpty())
+            studentEntity.setProfilePicture(createUserInput.getProfilePicture());
         return studentEntity;
     }
 
@@ -77,6 +80,8 @@ public class Converters {
         teacherEntity.setAuthId(createUserInput.getAuthId());
         teacherEntity.setEmail(createUserInput.getEmail());
         teacherEntity.setPhone(createUserInput.getPhone());
+        if (!createUserInput.getProfilePicture().isEmpty())
+            teacherEntity.setProfilePicture(createUserInput.getProfilePicture());
         return teacherEntity;
     }
 
