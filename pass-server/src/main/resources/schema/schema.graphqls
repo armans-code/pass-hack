@@ -10,10 +10,9 @@ type Mutation {
     createTeacher(createTeacherInput: CreateUserInput): Teacher
     createClassroom(createClassroomInput: CreateClassroomInput): Classroom
     joinClassroom(joinClassroomInput: JoinClassroomInput): JoinClassroomOutput
-    createPass(createPassInput: CreatePassInput): Pass
     requestPass(requestPassInput: RequestPassInput): RequestPassOutput
-    updatePass(updatePassInput: CreatePassInput): Pass
-    # Add pass expired mutation
+    createPass(createPassInput: CreatePassInput): Pass
+    revokePass(passId: ID!): Pass
 }
 
 input CreateUserInput {

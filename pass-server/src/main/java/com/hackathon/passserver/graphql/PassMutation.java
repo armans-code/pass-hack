@@ -8,6 +8,8 @@ import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsMutation;
 import org.springframework.web.bind.annotation.RequestHeader;
 
+import java.util.UUID;
+
 @DgsComponent
 public class PassMutation {
     private final PassCore passCore;
@@ -38,5 +40,17 @@ public class PassMutation {
     JoinClassroomOutput joinClassroom(JoinClassroomInput joinClassroomInput, @RequestHeader("authorization") String authorization) {
         FirebaseToken firebaseToken = authValidator.verifyUser(authorization);
         return passCore.joinClassroom(joinClassroomInput, firebaseToken.getUid());
+    }
+
+    @DgsMutation
+    Pass createPass(CreatePassInput createPassInput, @RequestHeader("authorization") String authorization) {
+        FirebaseToken firebaseToken = authValidator.verifyTeacher(authorization);
+        return passCore.createPass(createPassInput, firebaseToken.getUid());
+    }
+
+    @DgsMutation
+    Pass revokePass(String passId, @RequestHeader("authorization") String authorization) {
+        FirebaseToken firebaseToken = authValidator.verifyTeacher(authorization);
+        return passCore.revokePass(UUID.fromString(passId));
     }
 }

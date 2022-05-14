@@ -1,13 +1,16 @@
 package com.hackathon.passserver.converters;
 
-import com.hackathon.passserver.PassCore;
 import com.hackathon.passserver.entities.ClassroomEntity;
 import com.hackathon.passserver.entities.PassEntity;
+import com.hackathon.passserver.entities.PassType;
 import com.hackathon.passserver.entities.StudentEntity;
 import com.hackathon.passserver.entities.TeacherEntity;
 import com.hackathon.passserver.graphql.types.*;
 
-import java.util.Random;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.util.Date;
 import java.util.stream.Collectors;
 
 public class Converters {
@@ -26,7 +29,7 @@ public class Converters {
     public static Classroom convertClassroom(ClassroomEntity classroomEntity) {
         return Classroom.newBuilder()
                 .id(classroomEntity.getId().toString())
-                .name(classroomEntity.getName().toString())
+                .name(classroomEntity.getName())
                 .teacher(convertTeacher(classroomEntity.getTeacher()))
                 .code(classroomEntity.getCode())
                 .createdAt(classroomEntity.getCreatedAt().toString())
@@ -81,8 +84,30 @@ public class Converters {
         ClassroomEntity classroomEntity = new ClassroomEntity();
         classroomEntity.setTeacher(teacherEntity);
         classroomEntity.setName(createClassroomInput.getName());
-        if(!classroomEntity.getDescription().isEmpty())
+        if (!classroomEntity.getDescription().isEmpty())
             classroomEntity.setDescription(createClassroomInput.getDescription());
         return classroomEntity;
+    }
+
+    public static PassEntity buildPassEntity(CreatePassInput createPassInput,
+                                             TeacherEntity teacherEntity,
+                                             ClassroomEntity classroomEntity,
+                                             StudentEntity studentEntity) {
+        PassEntity passEntity = new PassEntity();
+        passEntity.setTeacher(teacherEntity);
+        passEntity.setClassroom(classroomEntity);
+        passEntity.setStudent(studentEntity);
+        passEntity.setPassType(PassType.valueOf(createPassInput.getPassType().name()));
+        passEntity.setStartTime(toDate(createPassInput.getStartTime()));
+        passEntity.setEndTime(toDate(createPassInput.getEndTime()));
+        return passEntity;
+    }
+
+    private static Date toDate(String dateInput) {
+        try {
+            return new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse(dateInput);
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("Invalid Date Format");
+        }
     }
 }
