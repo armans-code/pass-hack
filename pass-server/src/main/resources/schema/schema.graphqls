@@ -1,0 +1,118 @@
+type Query {
+    getTeacher: Teacher
+    getStudent: Student
+    getPasses: [Pass]
+    getClassrooms: [Classroom]
+}
+
+type Mutation {
+    createStudent(createStudentInput: CreateUserInput): Student
+    createTeacher(createTeacherInput: CreateUserInput): Teacher
+    createClassroom(createClassroomInput: CreateClassroomInput): Classroom
+    joinClassroom(joinClassroomInput: JoinClassroomInput): JoinClassroomOutput
+    createPass(createPassInput: CreatePassInput): Pass
+    requestPass(requestPassInput: RequestPassInput): RequestPassOutput
+    updatePass(updatePassInput: CreatePassInput): Pass
+    # Add pass expired mutation
+}
+
+input CreateUserInput {
+    firstName: String
+    lastName: String
+    email: String
+    phone: String
+    authId: String!
+}
+
+input RequestPassInput {
+    classroomId: ID!
+    message: String
+}
+
+type RequestPassOutput {
+    teacherId: ID!
+    status: String
+}
+
+input CreatePassInput {
+    studentId: ID!
+    classroomId: ID!
+    passType: PassType
+    startTime: String
+    endTime: String
+}
+
+enum PassType {
+    BATHROOM
+    LIBRARY
+    OFFICE
+    CLINIC
+    LOCKER
+    GYM
+    OTHER
+}
+
+input CreateClassroomInput {
+    teacherId: ID!
+    name: String!
+    description: String
+}
+
+type Pass {
+    id: ID!
+    student: Student
+    classroom: Classroom
+    teacher: Teacher
+    passType: String
+    revoked: Boolean
+    # Use Data Scalar in Future
+    startTime: String
+    endTime: String
+    createdAt: String
+    updatedAt: String
+}
+
+# Make Student and Teacher have Base
+
+type Student {
+    id: ID!
+    firstName: String
+    lastName: String
+    email: String
+    phone: String
+    classrooms: [Classroom]
+    createdAt: String
+    updatedAt: String
+}
+
+type Teacher {
+    id: ID!
+    firstName: String
+    lastName: String
+    email: String
+    phone: String
+    classrooms: [Classroom]
+    students: [Student]
+    createdAt: String
+    updatedAt: String
+}
+
+type Classroom {
+    id: ID!
+    name: String
+    code: String
+    teacher: Teacher
+    students: [Student]
+    createdAt: String
+    updatedAt: String
+}
+
+input JoinClassroomInput {
+    studentId: ID!
+    classCode: String
+}
+
+type JoinClassroomOutput {
+    studentId: ID
+    status: String
+}
