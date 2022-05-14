@@ -26,6 +26,5 @@ const styles = StyleSheet.create({
 		display: 'flex',
 		alignItems: 'center',
 		marginTop: 30,
-		backgroundColor: 'white',
 	},
 });

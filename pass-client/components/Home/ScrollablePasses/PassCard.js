@@ -38,7 +38,6 @@ const PassCard = (props) => {
 const styles = StyleSheet.create({
 	container: {
 		width: 250,
-		backgroundColor: 'white',
 	},
 });
 

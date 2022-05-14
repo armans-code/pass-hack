@@ -20,11 +20,11 @@ const styles = StyleSheet.create({
 		fontWeight: '400',
 		fontSize: 24,
 		lineHeight: 29,
-		color: '#6D6D6D',
+		color: 'black',
 	},
 	bottomText: {
 		color: '#6D6D6D',
 		fontSize: 18,
-		color: '#C1C1C1',
+		color: '#6D6D6D',
 	},
 });
