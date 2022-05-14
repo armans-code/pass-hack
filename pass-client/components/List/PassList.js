@@ -9,18 +9,21 @@ const PassList = () => {
 			time: '4:23',
 			location: 'Clinic',
 			expired: false,
+			id: 1,
 		},
 		{
 			name: 'Arman Kumaraswamy',
 			time: '1:23',
 			location: 'Library',
 			expired: false,
+			id: 2,
 		},
 		{
 			name: 'Lebron James',
 			time: 'Expired',
 			location: 'Clinic',
 			expired: true,
+			id: 3,
 		},
 		// {
 		// 	name: 'Jithen Shriyan',
@@ -59,6 +62,7 @@ const PassList = () => {
 				showsVerticalScrollIndicator={false}
 				data={data}
 				renderItem={renderItem}
+				keyExtractor={(item) => item.id}
 			/>
 		</View>
 	);
