@@ -7,6 +7,7 @@ import { useColorScheme } from 'react-native';
 
 import Colors from '../constants/Colors';
 import TabOneScreen from '../screens/TabOneScreen';
+import TabThreeScreen from '../screens/TabThreeScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 
 const BottomTab = createBottomTabNavigator();
@@ -24,17 +25,27 @@ export default function BottomTabNavigator() {
 				component={TabOneNavigator}
 				options={{
 					tabBarIcon: ({ color }) => (
-						<TabBarIcon name='ios-code' color={color} />
+						<TabBarIcon name='home-outline' color={color} />
 					),
 					headerShown: false,
 				}}
 			/>
 			<BottomTab.Screen
-				name='List'
+				name='Recent'
 				component={TabTwoNavigator}
 				options={{
 					tabBarIcon: ({ color }) => (
-						<TabBarIcon name='ios-code' color={color} />
+						<TabBarIcon name='list-outline' color={color} />
+					),
+					headerShown: false,
+				}}
+			/>
+			<BottomTab.Screen
+				name='Classes'
+				component={TabThreeNavigator}
+				options={{
+					tabBarIcon: ({ color }) => (
+						<TabBarIcon name='add-outline' color={color} />
 					),
 					headerShown: false,
 				}}
@@ -76,5 +87,19 @@ function TabTwoNavigator() {
 				options={{ headerShown: false }}
 			/>
 		</TabTwoStack.Navigator>
+	);
+}
+
+const TabThreeStack = createStackNavigator();
+
+function TabThreeNavigator() {
+	return (
+		<TabThreeStack.Navigator>
+			<TabThreeStack.Screen
+				name='Classes'
+				component={TabThreeScreen}
+				options={{ headerShown: false }}
+			/>
+		</TabThreeStack.Navigator>
 	);
 }
