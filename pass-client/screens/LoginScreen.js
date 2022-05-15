@@ -2,10 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, SafeAreaView, StyleSheet } from 'react-native';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { Button } from 'react-native-ui-lib';
+import { auth } from '../config/firebase';
 
 const LoginScreen = ({ navigation }) => {
 	const [email, setEmail] = useState();
 	const [password, setPassword] = useState();
+
+	const handleLogin = () => {
+		signInWithEmailAndPassword(auth, email, password);
+	};
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -16,7 +21,7 @@ const LoginScreen = ({ navigation }) => {
 				<TextInput
 					style={styles.input}
 					value={email}
-					autoCapitalize={false}
+					autoCapitalize='none'
 					autoCorrect={false}
 					placeholderTextColor={'gray'}
 					placeholder={'example@email.com'}
@@ -26,7 +31,7 @@ const LoginScreen = ({ navigation }) => {
 					style={styles.input}
 					value={password}
 					placeholderTextColor={'gray'}
-					autoCapitalize={false}
+					autoCapitalize='none'
 					autoCorrect={false}
 					placeholder={'Password'}
 					onChangeText={(text) => setPassword(text)}
@@ -39,16 +44,14 @@ const LoginScreen = ({ navigation }) => {
 					labelStyle={{
 						fontStyle: 'normal',
 						fontWeight: '400',
-						fontSize: '17px',
-						lineHeight: '21px',
+						fontSize: 17,
+						lineHeight: 21,
 						color: '#fff',
 					}}
 					backgroundColor={'#426AFA'}
 					enableShadow={true}
 					fullWidth={false}
-					onPress={() => {
-						console.log(true);
-					}}
+					onPress={handleLogin}
 					style={styles.loginBtn}
 				/>
 				<Button
@@ -56,8 +59,8 @@ const LoginScreen = ({ navigation }) => {
 					labelStyle={{
 						fontStyle: 'normal',
 						fontWeight: '400',
-						fontSize: '17px',
-						lineHeight: '21px',
+						fontSize: 17,
+						lineHeight: 21,
 						color: '#fff',
 					}}
 					backgroundColor={'#FFAD62'}

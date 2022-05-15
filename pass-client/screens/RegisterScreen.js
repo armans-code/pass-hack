@@ -1,16 +1,80 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { gql, useMutation } from '@apollo/client';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, SafeAreaView } from 'react-native';
 import PhoneInput from 'react-native-phone-number-input';
-import { Button } from 'react-native-ui-lib';
+import { Button, Checkbox } from 'react-native-ui-lib';
+import { auth } from '../config/firebase';
+
+const POST_STUDENT = gql`
+	mutation registerStudent($registerUserInput: RegisterUserInput!) {
+		registerStudent(registerUserInput: $registerUserInput) {
+			id
+			firstName
+			lastName
+			email
+			phone
+		}
+	}
+`;
+
+const POST_TEACHER = gql`
+	mutation registerTeacher($registerUserInput: RegisterUserInput!) {
+		registerTeacher(registerUserInput: $registerUserInput) {
+			id
+			firstName
+			lastName
+			email
+			phone
+		}
+	}
+`;
 
 const RegisterScreen = ({ navigation }) => {
 	const [firstName, setFirstName] = useState();
 	const [lastName, setLastName] = useState();
 	const [email, setEmail] = useState();
 	const [password, setPassword] = useState();
+	const [isTeacher, setIsTeacher] = useState(false);
 
 	const [value, setValue] = useState('');
 	const [formattedPhone, setFormattedPhone] = useState('');
+
+	const [postStudent, { data, loading, error }] = useMutation(POST_STUDENT);
+	const [postTeacher, { tData, tLoading, tError }] = useMutation(POST_TEACHER);
+
+	if (loading) console.log('Submitting...');
+	if (error) console.log(`Submission error! ${error.message}`);
+
+	if (tLoading) console.log('Loading...');
+	if (tError) console.log(`Submission error! ${tError.message}`);
+
+	const handleRegister = () => {
+		if (isTeacher) {
+			postTeacher({
+				variables: {
+					registerUserInput: {
+						firstName: firstName,
+						lastName: lastName,
+						email: email,
+						password: password,
+						phone: formattedPhone,
+					},
+				},
+			});
+		} else {
+			postStudent({
+				variables: {
+					registerUserInput: {
+						firstName: firstName,
+						lastName: lastName,
+						email: email,
+						password: password,
+						phone: formattedPhone,
+					},
+				},
+			});
+		}
+	};
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -40,7 +104,7 @@ const RegisterScreen = ({ navigation }) => {
 					style={styles.input}
 					value={email}
 					placeholderTextColor={'gray'}
-					autoCapitalize={false}
+					autoCapitalize='none'
 					autoCorrect={false}
 					placeholder={'example@email.com'}
 					onChangeText={(text) => setEmail(text)}
@@ -48,7 +112,7 @@ const RegisterScreen = ({ navigation }) => {
 				<TextInput
 					style={styles.input}
 					value={password}
-					autoCapitalize={false}
+					autoCapitalize='none'
 					autoCorrect={false}
 					placeholder={'Password'}
 					placeholderTextColor={'gray'}
@@ -68,6 +132,13 @@ const RegisterScreen = ({ navigation }) => {
 					withDarkTheme
 					withShadow
 				/>
+				<View style={styles.checkboxContainer}>
+					<Text style={{ fontSize: 17 }}>I am a teacher</Text>
+					<Checkbox
+						value={isTeacher}
+						onValueChange={() => setIsTeacher(!isTeacher)}
+					/>
+				</View>
 			</View>
 			<View style={styles.titleContainer}>
 				<Button
@@ -75,16 +146,14 @@ const RegisterScreen = ({ navigation }) => {
 					labelStyle={{
 						fontStyle: 'normal',
 						fontWeight: '400',
-						fontSize: '17px',
-						lineHeight: '21px',
+						fontSize: 17,
+						lineHeight: 21,
 						color: '#fff',
 					}}
 					backgroundColor={'#426AFA'}
 					enableShadow={true}
 					fullWidth={false}
-					onPress={() => {
-						console.log(true);
-					}}
+					onPress={handleRegister}
 					style={styles.loginBtn}
 				/>
 				<Button
@@ -92,8 +161,8 @@ const RegisterScreen = ({ navigation }) => {
 					labelStyle={{
 						fontStyle: 'normal',
 						fontWeight: '400',
-						fontSize: '17px',
-						lineHeight: '21px',
+						fontSize: 17,
+						lineHeight: 21,
 						color: '#fff',
 					}}
 					backgroundColor={'#FFAD62'}
@@ -117,6 +186,14 @@ const styles = StyleSheet.create({
 	titleContainer: {
 		display: 'flex',
 		alignItems: 'center',
+	},
+	checkboxContainer: {
+		display: 'flex',
+		flexDirection: 'row',
+		alignItems: 'center',
+		width: 150,
+		justifyContent: 'space-between',
+		marginTop: 30,
 	},
 	title: {
 		display: 'flex',

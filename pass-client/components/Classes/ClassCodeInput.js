@@ -20,8 +20,8 @@ const ClassCodeInput = () => {
 				labelStyle={{
 					fontStyle: 'normal',
 					fontWeight: '400',
-					fontSize: '17px',
-					lineHeight: '21px',
+					fontSize: 17,
+					lineHeight: 21,
 				}}
 				backgroundColor={'#426AFA'}
 				enableShadow={true}
