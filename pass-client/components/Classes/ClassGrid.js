@@ -20,6 +20,18 @@ const ClassGrid = () => {
 			name: 'Mrs. Locks',
 			id: 4,
 		},
+		{
+			name: 'Mrs. Locks',
+			id: 4,
+		},
+		{
+			name: 'Mrs. Locks',
+			id: 4,
+		},
+		{
+			name: 'Mrs. Locks',
+			id: 4,
+		},
 	];
 
 	const renderItem = ({ item }) => <ClassCard name={item.name} />;

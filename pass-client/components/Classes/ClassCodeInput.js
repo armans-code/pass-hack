@@ -27,7 +27,6 @@ const ClassCodeInput = () => {
 				enableShadow={true}
 				fullWidth={false}
 			/>
-			<Text>{code}</Text>
 		</View>
 	);
 };
@@ -40,6 +39,7 @@ const styles = StyleSheet.create({
 	},
 	input: {
 		height: 50,
+		width: 165,
 		fontSize: 15,
 		paddingHorizontal: 12,
 		borderRadius: 15,
