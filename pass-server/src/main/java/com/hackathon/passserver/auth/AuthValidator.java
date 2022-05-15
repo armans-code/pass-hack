@@ -1,12 +1,9 @@
 package com.hackathon.passserver.auth;
 
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
 
 @Component
 public class AuthValidator {

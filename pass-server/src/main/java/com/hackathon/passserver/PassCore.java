@@ -1,5 +1,7 @@
 package com.hackathon.passserver;
 
+import com.google.firebase.auth.UserRecord;
+import com.hackathon.passserver.auth.AuthService;
 import com.hackathon.passserver.converters.Converters;
 import com.hackathon.passserver.entities.ClassroomEntity;
 import com.hackathon.passserver.entities.PassEntity;
@@ -23,12 +25,14 @@ public class PassCore {
     private final TeacherRepository teacherRepository;
     private final PassRepository passRepository;
     private final ClassroomRepository classroomRepository;
+    private final AuthService authService;
 
-    public PassCore(StudentRepository studentRepository, TeacherRepository teacherRepository, PassRepository passRepository, ClassroomRepository classroomRepository) {
+    public PassCore(StudentRepository studentRepository, TeacherRepository teacherRepository, PassRepository passRepository, ClassroomRepository classroomRepository, AuthService authService) {
         this.studentRepository = studentRepository;
         this.teacherRepository = teacherRepository;
         this.passRepository = passRepository;
         this.classroomRepository = classroomRepository;
+        this.authService = authService;
     }
 
     public Student getStudent(String authId) {
@@ -58,14 +62,16 @@ public class PassCore {
         return passEntities.stream().map(Converters::convertPass).collect(Collectors.toList());
     }
 
-    public Student createStudent(CreateUserInput createUserInput) {
-        StudentEntity studentEntity = Converters.buildStudentEntity(createUserInput);
+    public Student registerStudent(RegisterUserInput registerStudentInput) {
+        UserRecord createdUser = authService.createStudent(registerStudentInput);
+        StudentEntity studentEntity = Converters.buildStudentEntity(registerStudentInput, createdUser.getUid());
         StudentEntity savedStudent = studentRepository.save(studentEntity);
         return Converters.convertStudent(savedStudent);
     }
 
-    public Teacher createTeacher(CreateUserInput createUserInput) {
-        TeacherEntity teacherEntity = Converters.buildTeacherEntity(createUserInput);
+    public Teacher registerTeacher(RegisterUserInput registerTeacherInput) {
+        UserRecord createdUser = authService.createTeacher(registerTeacherInput);
+        TeacherEntity teacherEntity = Converters.buildTeacherEntity(registerTeacherInput, createdUser.getUid());
         TeacherEntity savedTeacher = teacherRepository.save(teacherEntity);
         return Converters.convertTeacher(savedTeacher);
     }

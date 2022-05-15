@@ -27,8 +27,8 @@ public class StudentEntity extends BaseEntity {
     @Column(name = "phone", nullable = false)
     private String phone;
 
-    @Column(name = "profile_picture")
-    private String profilePicture;
+    @Column(name = "profile_image")
+    private String profileImage;
 
     @ManyToMany(mappedBy = "students")
     Set<ClassroomEntity> classrooms = new HashSet<>();

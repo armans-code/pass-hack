@@ -21,13 +21,13 @@ public class PassMutation {
     }
 
     @DgsMutation
-    Student createStudent(CreateUserInput createStudentInput) {
-        return passCore.createStudent(createStudentInput);
+    Student createStudent(RegisterUserInput registerStudentInput) {
+        return passCore.registerStudent(registerStudentInput);
     }
 
     @DgsMutation
-    Teacher createTeacher(CreateUserInput createTeacherInput) {
-        return passCore.createTeacher(createTeacherInput);
+    Teacher createTeacher(RegisterUserInput registerTeacherInput) {
+        return passCore.registerTeacher(registerTeacherInput);
     }
 
     @DgsMutation
@@ -53,4 +53,5 @@ public class PassMutation {
         FirebaseToken firebaseToken = authValidator.verifyTeacher(authorization);
         return passCore.revokePass(UUID.fromString(passId));
     }
+
 }

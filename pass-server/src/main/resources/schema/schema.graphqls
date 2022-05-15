@@ -6,8 +6,8 @@ type Query {
 }
 
 type Mutation {
-    createStudent(createStudentInput: CreateUserInput): Student
-    createTeacher(createTeacherInput: CreateUserInput): Teacher
+    registerStudent(registerStudentInput: RegisterUserInput): Student
+    registerTeacher(registerTeacherInput: RegisterUserInput): Teacher
     createClassroom(createClassroomInput: CreateClassroomInput): Classroom
     joinClassroom(joinClassroomInput: JoinClassroomInput): JoinClassroomOutput
     requestPass(requestPassInput: RequestPassInput): RequestPassOutput
@@ -15,13 +15,13 @@ type Mutation {
     revokePass(passId: ID!): Pass
 }
 
-input CreateUserInput {
+input RegisterUserInput {
     firstName: String
     lastName: String
     email: String
+    password: String
     phone: String
-    profilePicture: String
-    authId: String!
+    profileImage: String
 }
 
 input RequestPassInput {
@@ -80,7 +80,7 @@ type Student {
     lastName: String
     email: String
     phone: String
-    profilePicture: String
+    profileImage: String
     classrooms: [Classroom]
     createdAt: String
     updatedAt: String
@@ -92,7 +92,7 @@ type Teacher {
     lastName: String
     email: String
     phone: String
-    profilePicture: String
+    profileImage: String
     classrooms: [Classroom]
     students: [Student]
     createdAt: String
@@ -102,6 +102,7 @@ type Teacher {
 type Classroom {
     id: ID!
     name: String
+    description: String
     code: String
     teacher: Teacher
     students: [Student]

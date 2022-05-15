@@ -19,21 +19,23 @@ public class Converters {
                 .classrooms(studentEntity.getClassrooms().stream().map(Converters::convertClassroom).collect(Collectors.toList()))
                 .createdAt(studentEntity.getCreatedAt().toString())
                 .updatedAt(studentEntity.getUpdatedAt().toString());
-        if(!studentEntity.getProfilePicture().isEmpty())
-            studentBuilder.profilePicture(studentEntity.getProfilePicture());
+        if (!studentEntity.getProfileImage().isEmpty())
+            studentBuilder.profileImage(studentEntity.getProfileImage());
         return studentBuilder.build();
     }
 
     public static Classroom convertClassroom(ClassroomEntity classroomEntity) {
-        return Classroom.newBuilder()
+        Classroom.Builder classroomBuilder = Classroom.newBuilder()
                 .id(classroomEntity.getId().toString())
                 .name(classroomEntity.getName())
                 .teacher(convertTeacher(classroomEntity.getTeacher()))
                 .students(classroomEntity.getStudents().stream().map(Converters::convertStudent).collect(Collectors.toList()))
                 .code(classroomEntity.getCode())
                 .createdAt(classroomEntity.getCreatedAt().toString())
-                .updatedAt(classroomEntity.getUpdatedAt().toString())
-                .build();
+                .updatedAt(classroomEntity.getUpdatedAt().toString());
+        if (!classroomEntity.getDescription().isEmpty())
+            classroomBuilder.description(classroomEntity.getDescription());
+        return classroomBuilder.build();
     }
 
     public static Teacher convertTeacher(TeacherEntity teacherEntity) {
@@ -44,8 +46,8 @@ public class Converters {
                 .classrooms(teacherEntity.getClassrooms().stream().map(Converters::convertClassroom).collect(Collectors.toList()))
                 .email(teacherEntity.getEmail())
                 .phone(teacherEntity.getPhone());
-        if(!teacherEntity.getProfilePicture().isEmpty())
-            teacherBuilder.profilePicture(teacherEntity.getProfilePicture());
+        if (!teacherEntity.getProfileImage().isEmpty())
+            teacherBuilder.profileImage(teacherEntity.getProfileImage());
         return teacherBuilder.build();
     }
 
@@ -61,27 +63,27 @@ public class Converters {
                 .build();
     }
 
-    public static StudentEntity buildStudentEntity(CreateUserInput createUserInput) {
+    public static StudentEntity buildStudentEntity(RegisterUserInput registerUserInput, String uid) {
         StudentEntity studentEntity = new StudentEntity();
-        studentEntity.setFirstName(createUserInput.getFirstName());
-        studentEntity.setLastName(createUserInput.getLastName());
-        studentEntity.setAuthId(createUserInput.getAuthId());
-        studentEntity.setEmail(createUserInput.getEmail());
-        studentEntity.setPhone(createUserInput.getPhone());
-        if (!createUserInput.getProfilePicture().isEmpty())
-            studentEntity.setProfilePicture(createUserInput.getProfilePicture());
+        studentEntity.setFirstName(registerUserInput.getFirstName());
+        studentEntity.setLastName(registerUserInput.getLastName());
+        studentEntity.setAuthId(uid);
+        studentEntity.setEmail(registerUserInput.getEmail());
+        studentEntity.setPhone(registerUserInput.getPhone());
+        if (!registerUserInput.getProfileImage().isEmpty())
+            studentEntity.setProfileImage(registerUserInput.getProfileImage());
         return studentEntity;
     }
 
-    public static TeacherEntity buildTeacherEntity(CreateUserInput createUserInput) {
+    public static TeacherEntity buildTeacherEntity(RegisterUserInput registerUserInput, String uid) {
         TeacherEntity teacherEntity = new TeacherEntity();
-        teacherEntity.setFirstName(createUserInput.getFirstName());
-        teacherEntity.setLastName(createUserInput.getLastName());
-        teacherEntity.setAuthId(createUserInput.getAuthId());
-        teacherEntity.setEmail(createUserInput.getEmail());
-        teacherEntity.setPhone(createUserInput.getPhone());
-        if (!createUserInput.getProfilePicture().isEmpty())
-            teacherEntity.setProfilePicture(createUserInput.getProfilePicture());
+        teacherEntity.setFirstName(registerUserInput.getFirstName());
+        teacherEntity.setLastName(registerUserInput.getLastName());
+        teacherEntity.setAuthId(uid);
+        teacherEntity.setEmail(registerUserInput.getEmail());
+        teacherEntity.setPhone(registerUserInput.getPhone());
+        if (!registerUserInput.getProfileImage().isEmpty())
+            teacherEntity.setProfileImage(registerUserInput.getProfileImage());
         return teacherEntity;
     }
 
