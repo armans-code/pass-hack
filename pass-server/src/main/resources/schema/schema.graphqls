@@ -6,12 +6,12 @@ type Query {
 }
 
 type Mutation {
-    registerStudent(registerStudentInput: RegisterUserInput): Student
-    registerTeacher(registerTeacherInput: RegisterUserInput): Teacher
-    createClassroom(createClassroomInput: CreateClassroomInput): Classroom
-    joinClassroom(joinClassroomInput: JoinClassroomInput): JoinClassroomOutput
-    requestPass(requestPassInput: RequestPassInput): RequestPassOutput
-    createPass(createPassInput: CreatePassInput): Pass
+    registerStudent(registerUserInput: RegisterUserInput!): Student
+    registerTeacher(registerUserInput: RegisterUserInput!): Teacher
+    createClassroom(createClassroomInput: CreateClassroomInput!): Classroom
+    joinClassroom(joinClassroomInput: JoinClassroomInput!): JoinClassroomOutput
+    requestPass(requestPassInput: RequestPassInput!): RequestPassOutput
+    createPass(createPassInput: CreatePassInput!): Pass
     revokePass(passId: ID!): Pass
 }
 

@@ -6,6 +6,7 @@ import com.hackathon.passserver.auth.AuthValidator;
 import com.hackathon.passserver.graphql.types.*;
 import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsMutation;
+import com.netflix.graphql.dgs.InputArgument;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.UUID;
@@ -21,35 +22,35 @@ public class PassMutation {
     }
 
     @DgsMutation
-    Student createStudent(RegisterUserInput registerStudentInput) {
-        return passCore.registerStudent(registerStudentInput);
+    public Student registerStudent(@InputArgument RegisterUserInput registerUserInput) {
+        return passCore.registerStudent(registerUserInput);
     }
 
     @DgsMutation
-    Teacher createTeacher(RegisterUserInput registerTeacherInput) {
-        return passCore.registerTeacher(registerTeacherInput);
+    public Teacher registerTeacher(@InputArgument RegisterUserInput registerUserInput) {
+        return passCore.registerTeacher(registerUserInput);
     }
 
     @DgsMutation
-    Classroom createClassroom(CreateClassroomInput createClassroomInput, @RequestHeader("authorization") String authorization) {
+    public Classroom createClassroom(@InputArgument CreateClassroomInput createClassroomInput, @RequestHeader("Authorization") String authorization) {
         FirebaseToken firebaseToken = authValidator.verifyTeacher(authorization);
         return passCore.createClassroom(createClassroomInput, firebaseToken.getUid());
     }
 
     @DgsMutation
-    JoinClassroomOutput joinClassroom(JoinClassroomInput joinClassroomInput, @RequestHeader("authorization") String authorization) {
+    public JoinClassroomOutput joinClassroom(@InputArgument JoinClassroomInput joinClassroomInput, @RequestHeader("Authorization") String authorization) {
         FirebaseToken firebaseToken = authValidator.verifyUser(authorization);
         return passCore.joinClassroom(joinClassroomInput, firebaseToken.getUid());
     }
 
     @DgsMutation
-    Pass createPass(CreatePassInput createPassInput, @RequestHeader("authorization") String authorization) {
+    public Pass createPass(@InputArgument CreatePassInput createPassInput, @RequestHeader("Authorization") String authorization) {
         FirebaseToken firebaseToken = authValidator.verifyTeacher(authorization);
         return passCore.createPass(createPassInput, firebaseToken.getUid());
     }
 
     @DgsMutation
-    Pass revokePass(String passId, @RequestHeader("authorization") String authorization) {
+    public Pass revokePass(@InputArgument String passId, @RequestHeader("Authorization") String authorization) {
         FirebaseToken firebaseToken = authValidator.verifyTeacher(authorization);
         return passCore.revokePass(UUID.fromString(passId));
     }

@@ -24,25 +24,25 @@ public class PassFetcher {
     }
 
     @DgsQuery
-    Student getStudent(@RequestHeader("Authorization") String authorization) {
+    public Student getStudent(@RequestHeader("Authorization") String authorization) {
         FirebaseToken decoded = authValidator.verifyUser(authorization.split("Bearer ")[1]);
         return passCore.getStudent(decoded.getUid());
     }
 
     @DgsQuery
-    Teacher getTeacher(@RequestHeader("Authorization") String authorization) {
+    public Teacher getTeacher(@RequestHeader("Authorization") String authorization) {
         FirebaseToken decoded = authValidator.verifyTeacher(authorization.split("Bearer ")[1]);
         return passCore.getTeacher(decoded.getUid());
     }
 
     @DgsQuery
-    List<Pass> getPasses(@RequestHeader("Authorization") String authorization) {
+    public List<Pass> getPasses(@RequestHeader("Authorization") String authorization) {
         FirebaseToken decoded = authValidator.verifyUser(authorization.split("Bearer ")[1]);
         return passCore.getPasses(decoded.getClaims().get("role").toString(), decoded.getUid());
     }
 
     @DgsQuery
-    List<Classroom> getClassrooms(@RequestHeader("Authorization") String authorization) {
+    public List<Classroom> getClassrooms(@RequestHeader("Authorization") String authorization) {
         FirebaseToken decoded = authValidator.verifyUser(authorization.split("Bearer ")[1]);
         return passCore.getClassrooms(decoded.getClaims().get("role").toString(), decoded.getUid());
     }

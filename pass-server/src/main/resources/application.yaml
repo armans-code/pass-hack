@@ -1,3 +1,5 @@
+server:
+  port: 8081
 spring:
   datasource:
     url: jdbc:postgresql://localhost:26257/defaultdb?sslmode=disable
@@ -8,6 +10,8 @@ spring:
     hibernate:
       ddl-auto: update
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-  twilio:
-    account-sid: test
-    auth-token: test
+twilio:
+  account-sid: test
+  auth-token: test
+firebase:
+  project-id: test

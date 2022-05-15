@@ -3,6 +3,7 @@ package com.hackathon.passserver.converters;
 import com.hackathon.passserver.entities.PassType;
 import com.hackathon.passserver.entities.*;
 import com.hackathon.passserver.graphql.types.*;
+import org.springframework.util.ObjectUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -12,14 +13,16 @@ import java.util.stream.Collectors;
 public class Converters {
     public static Student convertStudent(StudentEntity studentEntity) {
         Student.Builder studentBuilder = Student.newBuilder()
+                .id(studentEntity.getId().toString())
                 .firstName(studentEntity.getFirstName())
                 .lastName(studentEntity.getLastName())
                 .email(studentEntity.getEmail())
                 .phone(studentEntity.getPhone())
                 .classrooms(studentEntity.getClassrooms().stream().map(Converters::convertClassroom).collect(Collectors.toList()))
-                .createdAt(studentEntity.getCreatedAt().toString())
-                .updatedAt(studentEntity.getUpdatedAt().toString());
-        if (!studentEntity.getProfileImage().isEmpty())
+                .createdAt(studentEntity.getCreatedAt().toString());
+        if (!ObjectUtils.isEmpty(studentEntity.getUpdatedAt()))
+            studentBuilder.updatedAt(studentEntity.getUpdatedAt().toString());
+        if (!ObjectUtils.isEmpty(studentEntity.getProfileImage()))
             studentBuilder.profileImage(studentEntity.getProfileImage());
         return studentBuilder.build();
     }
@@ -31,9 +34,10 @@ public class Converters {
                 .teacher(convertTeacher(classroomEntity.getTeacher()))
                 .students(classroomEntity.getStudents().stream().map(Converters::convertStudent).collect(Collectors.toList()))
                 .code(classroomEntity.getCode())
-                .createdAt(classroomEntity.getCreatedAt().toString())
-                .updatedAt(classroomEntity.getUpdatedAt().toString());
-        if (!classroomEntity.getDescription().isEmpty())
+                .createdAt(classroomEntity.getCreatedAt().toString());
+        if (!ObjectUtils.isEmpty(classroomEntity.getUpdatedAt()))
+            classroomBuilder.updatedAt(classroomEntity.getUpdatedAt().toString());
+        if (!ObjectUtils.isEmpty(classroomEntity.getDescription()))
             classroomBuilder.description(classroomEntity.getDescription());
         return classroomBuilder.build();
     }
@@ -46,7 +50,7 @@ public class Converters {
                 .classrooms(teacherEntity.getClassrooms().stream().map(Converters::convertClassroom).collect(Collectors.toList()))
                 .email(teacherEntity.getEmail())
                 .phone(teacherEntity.getPhone());
-        if (!teacherEntity.getProfileImage().isEmpty())
+        if (!ObjectUtils.isEmpty(teacherEntity.getProfileImage()))
             teacherBuilder.profileImage(teacherEntity.getProfileImage());
         return teacherBuilder.build();
     }
@@ -70,7 +74,7 @@ public class Converters {
         studentEntity.setAuthId(uid);
         studentEntity.setEmail(registerUserInput.getEmail());
         studentEntity.setPhone(registerUserInput.getPhone());
-        if (!registerUserInput.getProfileImage().isEmpty())
+        if (!ObjectUtils.isEmpty(registerUserInput.getProfileImage()))
             studentEntity.setProfileImage(registerUserInput.getProfileImage());
         return studentEntity;
     }
@@ -82,7 +86,7 @@ public class Converters {
         teacherEntity.setAuthId(uid);
         teacherEntity.setEmail(registerUserInput.getEmail());
         teacherEntity.setPhone(registerUserInput.getPhone());
-        if (!registerUserInput.getProfileImage().isEmpty())
+        if (!ObjectUtils.isEmpty(registerUserInput.getProfileImage()))
             teacherEntity.setProfileImage(registerUserInput.getProfileImage());
         return teacherEntity;
     }
@@ -91,7 +95,7 @@ public class Converters {
         ClassroomEntity classroomEntity = new ClassroomEntity();
         classroomEntity.setTeacher(teacherEntity);
         classroomEntity.setName(createClassroomInput.getName());
-        if (!classroomEntity.getDescription().isEmpty())
+        if (!ObjectUtils.isEmpty(createClassroomInput.getDescription()))
             classroomEntity.setDescription(createClassroomInput.getDescription());
         return classroomEntity;
     }
