@@ -55,4 +55,9 @@ public class PassMutation {
         return passCore.revokePass(UUID.fromString(passId));
     }
 
+    @DgsMutation
+    public RequestPassOutput requestPass(@InputArgument CreatePassInput requestPassInput) {
+        return passCore.requestPass(requestPassInput);
+    }
+
 }

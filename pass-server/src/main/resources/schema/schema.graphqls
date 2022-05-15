@@ -10,7 +10,7 @@ type Mutation {
     registerTeacher(registerUserInput: RegisterUserInput!): Teacher
     createClassroom(createClassroomInput: CreateClassroomInput!): Classroom
     joinClassroom(joinClassroomInput: JoinClassroomInput!): JoinClassroomOutput
-    requestPass(requestPassInput: RequestPassInput!): RequestPassOutput
+    requestPass(requestPassInput: CreatePassInput!): RequestPassOutput
     createPass(createPassInput: CreatePassInput!): Pass
     revokePass(passId: ID!): Pass
 }
@@ -24,10 +24,6 @@ input RegisterUserInput {
     profileImage: String
 }
 
-input RequestPassInput {
-    classroomId: ID!
-    message: String
-}
 
 type RequestPassOutput {
     teacherId: ID!
@@ -103,13 +99,11 @@ type Classroom {
     description: String
     code: String
     teacher: Teacher
-    students: [Student]
     createdAt: String
     updatedAt: String
 }
 
 input JoinClassroomInput {
-    studentId: ID!
     classCode: String
 }
 

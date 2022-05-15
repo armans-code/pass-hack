@@ -32,6 +32,7 @@ export default function BottomTabNavigator() {
 				setInitializing(false);
 			}
 		);
+		console.log(user);
 		return unsubscribeAuthStateChanged;
 	}, [user]);
 

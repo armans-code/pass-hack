@@ -13,6 +13,6 @@ public interface ClassroomRepository extends JpaRepository<ClassroomEntity, UUID
     @Query(nativeQuery = true, value = "SELECT * FROM classroom c WHERE c.code = :code")
     ClassroomEntity getByCode(String code);
 
-    @Query(nativeQuery = true, value = "SELECT * FROM classroom c WHERE c.teacherId = :teacherId")
+    @Query(nativeQuery = true, value = "SELECT * FROM classroom c WHERE c.teacher_id = :teacherId")
     List<ClassroomEntity> getByTeacherId(UUID teacherId);
 }

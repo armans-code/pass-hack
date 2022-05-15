@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -13,9 +14,9 @@ import java.util.Set;
 @Getter
 @Setter
 public class ClassroomEntity extends BaseEntity {
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
-            name = "classroom_student",
+            name = "ClassroomEntity_StudentEntity",
             joinColumns = {@JoinColumn(name = "classroom_id")},
             inverseJoinColumns = {@JoinColumn(name = "student_id")}
     )

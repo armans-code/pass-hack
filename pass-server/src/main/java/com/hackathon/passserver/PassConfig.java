@@ -17,13 +17,13 @@ import java.io.IOException;
 @ComponentScan
 public class PassConfig {
     @Value("${twilio.account-sid}")
-    private String accountSid;
+    String accountSid;
 
     @Value("${twilio.auth-token}")
-    private String authToken;
+    String authToken;
 
     @Value("${firebase.project-id}")
-    private String projectId;
+    String projectId;
 
     @Bean
     FirebaseApp firebaseApp() throws IOException {

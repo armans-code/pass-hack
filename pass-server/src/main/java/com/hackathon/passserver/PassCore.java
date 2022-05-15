@@ -8,11 +8,14 @@ import com.hackathon.passserver.entities.PassEntity;
 import com.hackathon.passserver.entities.StudentEntity;
 import com.hackathon.passserver.entities.TeacherEntity;
 import com.hackathon.passserver.graphql.types.*;
+import com.hackathon.passserver.notification.NotificationService;
 import com.hackathon.passserver.repositories.ClassroomRepository;
 import com.hackathon.passserver.repositories.PassRepository;
 import com.hackathon.passserver.repositories.StudentRepository;
 import com.hackathon.passserver.repositories.TeacherRepository;
+import com.twilio.type.PhoneNumber;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,13 +30,15 @@ public class PassCore {
     private final PassRepository passRepository;
     private final ClassroomRepository classroomRepository;
     private final AuthService authService;
+    private final NotificationService notificationService;
 
-    public PassCore(StudentRepository studentRepository, TeacherRepository teacherRepository, PassRepository passRepository, ClassroomRepository classroomRepository, AuthService authService) {
+    public PassCore(StudentRepository studentRepository, TeacherRepository teacherRepository, PassRepository passRepository, ClassroomRepository classroomRepository, AuthService authService, NotificationService notificationService) {
         this.studentRepository = studentRepository;
         this.teacherRepository = teacherRepository;
         this.passRepository = passRepository;
         this.classroomRepository = classroomRepository;
         this.authService = authService;
+        this.notificationService = notificationService;
     }
 
     public Student getStudent(String authId) {
@@ -84,6 +89,7 @@ public class PassCore {
         return Converters.convertClassroom(savedClassroom);
     }
 
+    @Transactional
     public JoinClassroomOutput joinClassroom(JoinClassroomInput joinClassroomInput, String authId) {
         StudentEntity studentEntity = getStudentByAuthId(authId);
         ClassroomEntity classroomEntity = classroomRepository.getByCode(joinClassroomInput.getClassCode());
@@ -125,6 +131,21 @@ public class PassCore {
         passEntity.setRevoked(true);
         PassEntity updatedPass = passRepository.save(passEntity);
         return Converters.convertPass(updatedPass);
+    }
+
+    public RequestPassOutput requestPass(CreatePassInput createPassInput) {
+        ClassroomEntity classroomEntity = getClassroomById(UUID.fromString(createPassInput.getClassroomId()));
+        StudentEntity studentEntity = getStudentById(UUID.fromString(createPassInput.getStudentId()));
+        TeacherEntity teacherEntity = classroomEntity.getTeacher();
+        String status = notificationService.requestPass(
+                new PhoneNumber(teacherEntity.getPhone()),
+                studentEntity.getFirstName() + " " + studentEntity.getLastName(),
+                createPassInput.getPassType().toString()
+        );
+        return RequestPassOutput.newBuilder()
+                .teacherId(teacherEntity.getId().toString())
+                .status(status)
+                .build();
     }
 
     private StudentEntity getStudentByAuthId(String authId) {

@@ -32,7 +32,6 @@ public class Converters {
                 .id(classroomEntity.getId().toString())
                 .name(classroomEntity.getName())
                 .teacher(convertTeacher(classroomEntity.getTeacher()))
-                .students(classroomEntity.getStudents().stream().map(Converters::convertStudent).collect(Collectors.toList()))
                 .code(classroomEntity.getCode())
                 .createdAt(classroomEntity.getCreatedAt().toString());
         if (!ObjectUtils.isEmpty(classroomEntity.getUpdatedAt()))
