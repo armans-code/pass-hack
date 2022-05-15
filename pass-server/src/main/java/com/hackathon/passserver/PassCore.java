@@ -14,6 +14,7 @@ import com.hackathon.passserver.repositories.StudentRepository;
 import com.hackathon.passserver.repositories.TeacherRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -94,15 +95,15 @@ public class PassCore {
     }
 
     public List<Classroom> getClassrooms(String role, String authId) {
-        Set<ClassroomEntity> classroomEntities;
+        List<ClassroomEntity> classroomEntities;
         switch (role) {
             case "student":
                 StudentEntity studentEntity = getStudentByAuthId(authId);
-                classroomEntities = studentEntity.getClassrooms();
+                classroomEntities = new ArrayList<>(studentEntity.getClassrooms());
                 break;
             case "teacher":
                 TeacherEntity teacherEntity = getTeacherByAuthId(authId);
-                classroomEntities = teacherEntity.getClassrooms();
+                classroomEntities = classroomRepository.getByTeacherId(teacherEntity.getId());
                 break;
             default:
                 throw new IllegalArgumentException("Invalid Role");

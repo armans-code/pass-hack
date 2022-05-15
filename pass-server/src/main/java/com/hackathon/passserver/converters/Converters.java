@@ -47,7 +47,6 @@ public class Converters {
                 .id(teacherEntity.getId().toString())
                 .firstName(teacherEntity.getFirstName())
                 .lastName(teacherEntity.getLastName())
-                .classrooms(teacherEntity.getClassrooms().stream().map(Converters::convertClassroom).collect(Collectors.toList()))
                 .email(teacherEntity.getEmail())
                 .phone(teacherEntity.getPhone());
         if (!ObjectUtils.isEmpty(teacherEntity.getProfileImage()))

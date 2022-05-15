@@ -12,7 +12,7 @@ import java.util.Set;
 @Getter
 @Setter
 public class StudentEntity extends BaseEntity {
-    @Column(name = "auth_id", nullable = false)
+    @Column(name = "auth_id", nullable = false, unique = true)
     private String authId;
 
     @Column(name = "first_name", nullable = false)
@@ -21,10 +21,10 @@ public class StudentEntity extends BaseEntity {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "phone", nullable = false)
+    @Column(name = "phone", nullable = false, unique = true)
     private String phone;
 
     @Column(name = "profile_image")
@@ -32,7 +32,4 @@ public class StudentEntity extends BaseEntity {
 
     @ManyToMany(mappedBy = "students")
     Set<ClassroomEntity> classrooms = new HashSet<>();
-
-    @OneToMany(mappedBy = "student")
-    Set<PassEntity> passes = new HashSet<>();
 }

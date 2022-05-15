@@ -5,10 +5,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.UUID;
 
 @Repository
 public interface ClassroomRepository extends JpaRepository<ClassroomEntity, UUID> {
-    @Query(nativeQuery = true, value = "SELECT c FROM classroom c WHERE c.code = :code")
+    @Query(nativeQuery = true, value = "SELECT * FROM classroom c WHERE c.code = :code")
     ClassroomEntity getByCode(String code);
+
+    @Query(nativeQuery = true, value = "SELECT * FROM classroom c WHERE c.teacherId = :teacherId")
+    List<ClassroomEntity> getByTeacherId(UUID teacherId);
 }

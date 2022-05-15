@@ -20,7 +20,7 @@ public class AuthService {
         try {
             UserRecord.CreateRequest createRequest = buildCreateRequest(registerUserInput);
             UserRecord userRecord = firebaseAuth.createUser(createRequest);
-            userRecord.updateRequest().setCustomClaims(Map.of("role", "student"));
+            firebaseAuth.setCustomUserClaims(userRecord.getUid(), Map.of("role", "student"));
             return userRecord;
         } catch (FirebaseAuthException e) {
             throw new IllegalArgumentException(e);
@@ -31,7 +31,7 @@ public class AuthService {
         try {
             UserRecord.CreateRequest createRequest = buildCreateRequest(registerUserInput);
             UserRecord userRecord = firebaseAuth.createUser(createRequest);
-            userRecord.getCustomClaims().put("role", "teacher");
+            firebaseAuth.setCustomUserClaims(userRecord.getUid(), Map.of("role", "teacher"));
             return userRecord;
         } catch (FirebaseAuthException e) {
             throw new IllegalArgumentException(e);

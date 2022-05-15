@@ -2,7 +2,7 @@ import { SafeAreaView, StyleSheet } from 'react-native';
 import PassList from '../components/List/PassList';
 import { Text } from '../components/Themed';
 
-export default function TabTwoScreen() {
+export default function RecentScreen() {
 	return (
 		<SafeAreaView style={styles.container}>
 			<Text style={styles.title}>Recent Passes</Text>

@@ -33,25 +33,25 @@ public class PassMutation {
 
     @DgsMutation
     public Classroom createClassroom(@InputArgument CreateClassroomInput createClassroomInput, @RequestHeader("Authorization") String authorization) {
-        FirebaseToken firebaseToken = authValidator.verifyTeacher(authorization);
+        FirebaseToken firebaseToken = authValidator.verifyTeacher(authorization.split("Bearer ")[1]);
         return passCore.createClassroom(createClassroomInput, firebaseToken.getUid());
     }
 
     @DgsMutation
     public JoinClassroomOutput joinClassroom(@InputArgument JoinClassroomInput joinClassroomInput, @RequestHeader("Authorization") String authorization) {
-        FirebaseToken firebaseToken = authValidator.verifyUser(authorization);
+        FirebaseToken firebaseToken = authValidator.verifyUser(authorization.split("Bearer ")[1]);
         return passCore.joinClassroom(joinClassroomInput, firebaseToken.getUid());
     }
 
     @DgsMutation
     public Pass createPass(@InputArgument CreatePassInput createPassInput, @RequestHeader("Authorization") String authorization) {
-        FirebaseToken firebaseToken = authValidator.verifyTeacher(authorization);
+        FirebaseToken firebaseToken = authValidator.verifyTeacher(authorization.split("Bearer ")[1]);
         return passCore.createPass(createPassInput, firebaseToken.getUid());
     }
 
     @DgsMutation
     public Pass revokePass(@InputArgument String passId, @RequestHeader("Authorization") String authorization) {
-        FirebaseToken firebaseToken = authValidator.verifyTeacher(authorization);
+        FirebaseToken firebaseToken = authValidator.verifyTeacher(authorization.split("Bearer ")[1]);
         return passCore.revokePass(UUID.fromString(passId));
     }
 

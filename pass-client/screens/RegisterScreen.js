@@ -60,6 +60,11 @@ const RegisterScreen = ({ navigation }) => {
 						phone: formattedPhone,
 					},
 				},
+			}).then(res => {
+				if(!res.errors)
+					navigation.navigate('Login')
+				else
+					console.log(res.errors)
 			});
 		} else {
 			postStudent({
@@ -72,6 +77,11 @@ const RegisterScreen = ({ navigation }) => {
 						phone: formattedPhone,
 					},
 				},
+			}).then(res => {
+				if(!res.errors)
+					navigation.navigate('Login')
+				else
+					console.log(res.errors)
 			});
 		}
 	};
@@ -153,7 +163,7 @@ const RegisterScreen = ({ navigation }) => {
 					backgroundColor={'#426AFA'}
 					enableShadow={true}
 					fullWidth={false}
-					onPress={handleRegister}
+					onPress={() => handleRegister()}
 					style={styles.loginBtn}
 				/>
 				<Button

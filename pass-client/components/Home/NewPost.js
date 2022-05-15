@@ -6,7 +6,7 @@ export default function NewPost() {
 	return (
 		<View style={styles.container}>
 			<Button
-				label={'Create New Pass'}
+				label={'Issue Pass'}
 				labelStyle={{
 					fontStyle: 'normal',
 					fontWeight: '400',

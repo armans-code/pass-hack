@@ -4,7 +4,9 @@ import {
 	ScrollView,
 	StyleSheet,
 	View,
+	Pressable
 } from 'react-native';
+import { gql, useMutation } from '@apollo/client';
 import ActivePasses from '../components/Home/ScrollablePasses/ActivePasses';
 import ExpiredPasses from '../components/Home/ScrollablePasses/ExpiredPasses';
 import WelcomeHeader from '../components/Home/WelcomeHeader';
@@ -13,7 +15,7 @@ import { Button, Picker } from 'react-native-ui-lib';
 import { Text } from '../components/Themed';
 import { Ionicons } from '@expo/vector-icons';
 
-export default function TabOneScreen() {
+export default function HomeScreen({user}) {
 	const [visible, setVisible] = useState(false);
 	const [query, setQuery] = useState();
 	const [location, setLocation] = useState();
@@ -47,19 +49,43 @@ export default function TabOneScreen() {
 		'Other',
 	];
 
-	const dataa = [
-		'tasf',
-		'fdasfdsa',
-		'fdjlaskfjkdl;saj;klfadsj;klfadsjkl;',
-		'fdaksjl;',
+	const classrooms = [
+		{
+			name: 'Classroom A',
+			id: 1,
+		},
+		{
+			name: 'Classroom B',
+			id: 2,
+		},
+		{
+			name: 'Classroom C',
+			id: 3,
+		},
+		{
+			name: 'Classroom D',
+			id: 4,
+		},
 	];
+
+
+	const GET_PASSES = gql`
+	query getPasses {
+		getPasses {
+			id
+			name
+			student
+			classroom
+			teacher
+		}
+	}
+`;
 
 	return (
 		<SafeAreaView style={styles.container}>
 			<ScrollView>
 				<Modal
 					animationType={'slide'}
-					transparent={false}
 					visible={visible}
 					onRequestClose={() => {
 						Alert.alert('Modal has now been closed.');
@@ -67,15 +93,32 @@ export default function TabOneScreen() {
 					style={styles.modal}
 				>
 					<SafeAreaView style={styles.modalContainer}>
-						<Ionicons size={20} name='close-circle-outline' />
+						<Pressable onPress={() => setVisible(!visible)}>
+							<Ionicons size={20} name='close-circle-outline' color="white"  style={{marginTop: 25}} />
+						</Pressable>
 						<Text style={styles.modalTitle}>Create New Pass</Text>
-						<Text style={styles.modalSubTitle}>Mrs. Smith's Class</Text>
+						<Picker
+							value={query}
+							onChange={(item) => setQuery(item.value)}
+							placeholder={'Select a Classroom'}
+							showSearch
+							useSafeArea
+							migrateTextField
+							placeholderTextColor={'#fff'}
+							searchPlaceholder={'Select a Classroom'}
+							style={styles.picker}
+						>
+							{classrooms.map((item) => (
+								<Picker.Item value={item.id} key={item.id} label={item.name} />
+							))}
+						</Picker>
 						<Picker
 							value={query}
 							onChange={(item) => setQuery(item.value)}
 							placeholder={'Pick a student'}
 							showSearch
 							useSafeArea
+							migrateTextField
 							placeholderTextColor={'#fff'}
 							searchPlaceholder={'Search for student'}
 							style={styles.picker}
@@ -89,6 +132,7 @@ export default function TabOneScreen() {
 							onChange={(item) => setLocation(item.value)}
 							placeholder={'Pick a location'}
 							useSafeArea
+							migrateTextField
 							placeholderTextColor={'#fff'}
 							style={styles.picker}
 						>
@@ -107,8 +151,8 @@ export default function TabOneScreen() {
 								labelStyle={{
 									fontStyle: 'normal',
 									fontWeight: '400',
-									fontSize: '17px',
-									lineHeight: '21px',
+									fontSize: 17,
+									lineHeight: 21,
 									color: '#426AFA',
 								}}
 								backgroundColor={'#fff'}
@@ -130,8 +174,8 @@ export default function TabOneScreen() {
 						labelStyle={{
 							fontStyle: 'normal',
 							fontWeight: '400',
-							fontSize: '17px',
-							lineHeight: '21px',
+							fontSize: 17,
+							lineHeight: 21,
 						}}
 						backgroundColor={'#426AFA'}
 						enableShadow={true}
@@ -186,7 +230,7 @@ const styles = StyleSheet.create({
 	},
 	picker: {
 		color: '#fff',
-		marginTop: 25,
+		marginTop: 25
 	},
 	btnContainer: {
 		display: 'flex',

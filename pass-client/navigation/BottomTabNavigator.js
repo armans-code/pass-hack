@@ -8,12 +8,13 @@ import { useColorScheme } from 'react-native';
 
 import Colors from '../constants/Colors';
 import LoginScreen from '../screens/LoginScreen';
-import TabOneScreen from '../screens/TabOneScreen';
-import TabThreeScreen from '../screens/TabThreeScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
+import HomeScreen from '../screens/HomeScreen';
+import ClassScreen from '../screens/ClassScreen';
+import RenameScreen from '../screens/RecentScreen';
 import { auth } from '../config/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import RegisterScreen from '../screens/RegisterScreen';
+import RecentScreen from '../screens/RecentScreen';
 
 const BottomTab = createBottomTabNavigator();
 
@@ -24,7 +25,6 @@ export default function BottomTabNavigator() {
 	const [user, setUser] = useState();
 
 	useEffect(() => {
-		// onAuthStateChanged returns an unsubscriber
 		const unsubscribeAuthStateChanged = onAuthStateChanged(
 			auth,
 			(authenticatedUser) => {
@@ -32,8 +32,6 @@ export default function BottomTabNavigator() {
 				setInitializing(false);
 			}
 		);
-
-		// unsubscribe auth listener on unmount
 		return unsubscribeAuthStateChanged;
 	}, [user]);
 
@@ -50,7 +48,7 @@ export default function BottomTabNavigator() {
 		>
 			<BottomTab.Screen
 				name='Home'
-				component={TabOneNavigator}
+				children={() => <HomeScreen user={user} />}
 				options={{
 					tabBarIcon: ({ color }) => (
 						<TabBarIcon name='home-outline' color={color} />
@@ -60,7 +58,7 @@ export default function BottomTabNavigator() {
 			/>
 			<BottomTab.Screen
 				name='Recent'
-				component={TabTwoNavigator}
+				component={RecentScreen}
 				options={{
 					tabBarIcon: ({ color }) => (
 						<TabBarIcon name='list-outline' color={color} />
@@ -70,7 +68,7 @@ export default function BottomTabNavigator() {
 			/>
 			<BottomTab.Screen
 				name='Classes'
-				component={TabThreeNavigator}
+				component={ClassScreen}
 				options={{
 					tabBarIcon: ({ color }) => (
 						<TabBarIcon name='add-outline' color={color} />
@@ -111,48 +109,4 @@ function AuthNavigator() {
 // https://icons.expo.fyi/
 function TabBarIcon(props) {
 	return <Ionicons size={30} style={{ marginBottom: -3 }} {...props} />;
-}
-
-// Each tab has its own navigation stack, you can read more about this pattern here:
-// https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
-const TabOneStack = createStackNavigator();
-
-function TabOneNavigator() {
-	return (
-		<TabOneStack.Navigator>
-			<TabOneStack.Screen
-				name='Home'
-				component={TabOneScreen}
-				options={{ headerShown: false }}
-			/>
-		</TabOneStack.Navigator>
-	);
-}
-
-const TabTwoStack = createStackNavigator();
-
-function TabTwoNavigator() {
-	return (
-		<TabTwoStack.Navigator>
-			<TabTwoStack.Screen
-				name='List'
-				component={TabTwoScreen}
-				options={{ headerShown: false }}
-			/>
-		</TabTwoStack.Navigator>
-	);
-}
-
-const TabThreeStack = createStackNavigator();
-
-function TabThreeNavigator() {
-	return (
-		<TabThreeStack.Navigator>
-			<TabThreeStack.Screen
-				name='Classes'
-				component={TabThreeScreen}
-				options={{ headerShown: false }}
-			/>
-		</TabThreeStack.Navigator>
-	);
 }

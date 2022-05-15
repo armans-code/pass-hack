@@ -3,7 +3,7 @@ import React from 'react';
 import ClassCodeInput from '../components/Classes/ClassCodeInput';
 import ClassGrid from '../components/Classes/ClassGrid';
 
-const TabThreeScreen = () => {
+const ClassScreen = () => {
 	return (
 		<SafeAreaView style={styles.container}>
 			<Text style={styles.title}>Join Class</Text>
@@ -31,4 +31,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default TabThreeScreen;
+export default ClassScreen;
