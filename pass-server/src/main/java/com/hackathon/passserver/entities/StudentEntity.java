@@ -30,6 +30,6 @@ public class StudentEntity extends BaseEntity {
     @Column(name = "profile_image")
     private String profileImage;
 
-    @ManyToMany(cascade = CascadeType.MERGE, mappedBy = "students", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "students")
     Set<ClassroomEntity> classrooms = new HashSet<>();
 }

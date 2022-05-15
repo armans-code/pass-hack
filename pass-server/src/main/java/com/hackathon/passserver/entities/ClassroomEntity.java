@@ -14,7 +14,7 @@ import java.util.Set;
 @Getter
 @Setter
 public class ClassroomEntity extends BaseEntity {
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
             name = "ClassroomEntity_StudentEntity",
             joinColumns = {@JoinColumn(name = "classroom_id")},
