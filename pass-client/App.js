@@ -6,10 +6,13 @@ import Navigation from './navigation';
 import { useColorScheme } from 'react-native';
 import 'react-native-gesture-handler';
 import { ApolloProvider, InMemoryCache, ApolloClient } from '@apollo/client';
+import { firebaseConfig } from './config/firebase';
+import { initializeApp } from 'firebase/app';
 
 export default function App() {
 	const isLoadingComplete = useLoadedAssets();
 	const colorScheme = useColorScheme();
+	initializeApp(firebaseConfig);
 
 	const client = new ApolloClient({
 		uri: 'http://localhost:8081/graphql',

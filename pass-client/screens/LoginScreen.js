@@ -9,11 +9,12 @@ import {
 } from "react-native";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { Button } from "react-native-ui-lib";
-import { auth } from "../config/firebase";
+import { getAuth } from "firebase/auth";
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const auth = getAuth();
 
   const handleLogin = () => {
     signInWithEmailAndPassword(auth, email, password);
