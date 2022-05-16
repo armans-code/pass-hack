@@ -1,6 +1,10 @@
 // If you are not familiar with React Navigation, check out the "Fundamentals" guide:
 // https://reactnavigation.org/docs/getting-started
-import { KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from "react-native";
+import {
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
 import {
   DarkTheme,
   DefaultTheme,
@@ -8,8 +12,9 @@ import {
 } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import NotFoundScreen from "../screens/NotFoundScreen";
-import BottomTabNavigator from "./BottomTabNavigator";
+import Navigator from "./Navigator";
 import LinkingConfiguration from "./LinkingConfiguration";
+import AuthProvider from "../context/AuthProvider";
 
 export default function Navigation({ colorScheme }) {
   return (
@@ -28,20 +33,22 @@ const Stack = createStackNavigator();
 
 function RootNavigator() {
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS == "ios" ? "padding" : "height"}
-    >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Root" component={BottomTabNavigator} />
-          <Stack.Screen
-            name="NotFound"
-            component={NotFoundScreen}
-            options={{ title: "Oops!" }}
-          />
-        </Stack.Navigator>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+    <AuthProvider>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS == "ios" ? "padding" : "height"}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Root" component={Navigator} />
+            <Stack.Screen
+              name="NotFound"
+              component={NotFoundScreen}
+              options={{ title: "Oops!" }}
+            />
+          </Stack.Navigator>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
+    </AuthProvider>
   );
 }

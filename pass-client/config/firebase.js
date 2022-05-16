@@ -1,13 +1,21 @@
-import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import {
+  FIREBASE_API_KEY,
+  FIREBASE_AUTH_DOMAIN,
+  FIREBASE_PROJECT_ID,
+  FIREBASE_STORAGE_BUCKET,
+  FIREBASE_MESSAGE_SENDER_ID,
+  FIREBASE_APP_ID,
+} from "@env";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAI9ZmcnRf1eHboluyoOlPM94S2Wfao8ao",
-  authDomain: "massey-hackathon.firebaseapp.com",
-  projectId: "massey-hackathon",
-  storageBucket: "massey-hackathon.appspot.com",
-  messagingSenderId: "841396285132",
-  appId: "1:841396285132:web:08a866eee72fa2a2a61c69"
+  apiKey: FIREBASE_API_KEY,
+  authDomain: FIREBASE_AUTH_DOMAIN,
+  projectId: FIREBASE_PROJECT_ID,
+  storageBucket: FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: FIREBASE_MESSAGE_SENDER_ID,
+  appId: FIREBASE_APP_ID,
 };
 
 initializeApp(firebaseConfig);
