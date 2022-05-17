@@ -41,12 +41,12 @@ public class PassCore {
         this.notificationService = notificationService;
     }
 
-    public Student getStudent(String authId) {
+    public User getStudent(String authId) {
         StudentEntity studentEntity = getStudentByAuthId(authId);
         return Converters.convertStudent(studentEntity);
     }
 
-    public Teacher getTeacher(String authId) {
+    public User getTeacher(String authId) {
         TeacherEntity teacherEntity = getTeacherByAuthId(authId);
         return Converters.convertTeacher(teacherEntity);
     }
@@ -68,14 +68,14 @@ public class PassCore {
         return passEntities.stream().map(Converters::convertPass).collect(Collectors.toList());
     }
 
-    public Student registerStudent(RegisterUserInput registerStudentInput) {
+    public User registerStudent(RegisterUserInput registerStudentInput) {
         UserRecord createdUser = authService.createStudent(registerStudentInput);
         StudentEntity studentEntity = Converters.buildStudentEntity(registerStudentInput, createdUser.getUid());
         StudentEntity savedStudent = studentRepository.save(studentEntity);
         return Converters.convertStudent(savedStudent);
     }
 
-    public Teacher registerTeacher(RegisterUserInput registerTeacherInput) {
+    public User registerTeacher(RegisterUserInput registerTeacherInput) {
         UserRecord createdUser = authService.createTeacher(registerTeacherInput);
         TeacherEntity teacherEntity = Converters.buildTeacherEntity(registerTeacherInput, createdUser.getUid());
         TeacherEntity savedTeacher = teacherRepository.save(teacherEntity);

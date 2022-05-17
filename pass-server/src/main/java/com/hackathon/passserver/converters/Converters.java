@@ -11,14 +11,13 @@ import java.util.Date;
 import java.util.stream.Collectors;
 
 public class Converters {
-    public static Student convertStudent(StudentEntity studentEntity) {
-        Student.Builder studentBuilder = Student.newBuilder()
+    public static User convertStudent(StudentEntity studentEntity) {
+        User.Builder studentBuilder = User.newBuilder()
                 .id(studentEntity.getId().toString())
                 .firstName(studentEntity.getFirstName())
                 .lastName(studentEntity.getLastName())
                 .email(studentEntity.getEmail())
                 .phone(studentEntity.getPhone())
-                .classrooms(studentEntity.getClassrooms().stream().map(Converters::convertClassroom).collect(Collectors.toList()))
                 .createdAt(studentEntity.getCreatedAt().toString());
         if (!ObjectUtils.isEmpty(studentEntity.getUpdatedAt()))
             studentBuilder.updatedAt(studentEntity.getUpdatedAt().toString());
@@ -41,8 +40,8 @@ public class Converters {
         return classroomBuilder.build();
     }
 
-    public static Teacher convertTeacher(TeacherEntity teacherEntity) {
-        Teacher.Builder teacherBuilder = Teacher.newBuilder()
+    public static User convertTeacher(TeacherEntity teacherEntity) {
+        User.Builder teacherBuilder = User.newBuilder()
                 .id(teacherEntity.getId().toString())
                 .firstName(teacherEntity.getFirstName())
                 .lastName(teacherEntity.getLastName())

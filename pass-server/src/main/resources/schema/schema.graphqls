@@ -1,5 +1,6 @@
 type Query {
     getTeacher: Teacher
+    getUser: User
     getStudent: Student
     getPasses: [Pass]
     getClassrooms: [Classroom]
@@ -55,19 +56,28 @@ input CreateClassroomInput {
 
 type Pass {
     id: ID!
-    student: Student
+    student: User
     classroom: Classroom
-    teacher: Teacher
+    teacher: User
     passType: String
     revoked: Boolean
-    # Use Data Scalar in Future
     startTime: String
     endTime: String
     createdAt: String
     updatedAt: String
 }
 
-# Make Student and Teacher have Base
+# for getUser
+type User {
+    id: ID!
+    firstName: String
+    lastName: String
+    email: String
+    phone: String
+    profileImage: String
+    createdAt: String
+    updatedAt: String
+}
 
 type Student {
     id: ID!
@@ -98,7 +108,7 @@ type Classroom {
     name: String
     description: String
     code: String
-    teacher: Teacher
+    teacher: User
     createdAt: String
     updatedAt: String
 }

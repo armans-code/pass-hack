@@ -3,10 +3,7 @@ package com.hackathon.passserver.graphql;
 import com.google.firebase.auth.FirebaseToken;
 import com.hackathon.passserver.PassCore;
 import com.hackathon.passserver.auth.AuthValidator;
-import com.hackathon.passserver.graphql.types.Classroom;
-import com.hackathon.passserver.graphql.types.Pass;
-import com.hackathon.passserver.graphql.types.Student;
-import com.hackathon.passserver.graphql.types.Teacher;
+import com.hackathon.passserver.graphql.types.*;
 import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsQuery;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -24,13 +21,24 @@ public class PassFetcher {
     }
 
     @DgsQuery
-    public Student getStudent(@RequestHeader("Authorization") String authorization) {
+    public User getUser(@RequestHeader("Authorization") String authorization) {
+        FirebaseToken decoded = authValidator.verifyUser(authorization.split("Bearer ")[1]);
+        if(decoded.getClaims().get("role").equals("teacher")) {
+            return passCore.getTeacher(decoded.getUid());
+        } else {
+            return passCore.getStudent(decoded.getUid());
+        }
+    }
+
+
+    @DgsQuery
+    public User getStudent(@RequestHeader("Authorization") String authorization) {
         FirebaseToken decoded = authValidator.verifyUser(authorization.split("Bearer ")[1]);
         return passCore.getStudent(decoded.getUid());
     }
 
     @DgsQuery
-    public Teacher getTeacher(@RequestHeader("Authorization") String authorization) {
+    public User getTeacher(@RequestHeader("Authorization") String authorization) {
         FirebaseToken decoded = authValidator.verifyTeacher(authorization.split("Bearer ")[1]);
         return passCore.getTeacher(decoded.getUid());
     }
