@@ -41,6 +41,19 @@ public class PassCore {
         this.notificationService = notificationService;
     }
 
+    public User getUser(String authId, String role) {
+        switch(role) {
+            case "student":
+                StudentEntity studentEntity = getStudentByAuthId(authId);
+                return Converters.convertStudent(studentEntity);
+            case "teacher":
+                TeacherEntity teacherEntity = getTeacherByAuthId(authId);
+                return Converters.convertTeacher(teacherEntity);
+            default:
+                throw new IllegalArgumentException("Invalid Role");
+        }
+    }
+
     public User getStudent(String authId) {
         StudentEntity studentEntity = getStudentByAuthId(authId);
         return Converters.convertStudent(studentEntity);

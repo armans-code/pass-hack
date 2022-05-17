@@ -1,14 +1,12 @@
 type Query {
-    getTeacher: Teacher
     getUser: User
-    getStudent: Student
     getPasses: [Pass]
     getClassrooms: [Classroom]
 }
 
 type Mutation {
-    registerStudent(registerUserInput: RegisterUserInput!): Student
-    registerTeacher(registerUserInput: RegisterUserInput!): Teacher
+    registerStudent(registerUserInput: RegisterUserInput!): User
+    registerTeacher(registerUserInput: RegisterUserInput!): User
     createClassroom(createClassroomInput: CreateClassroomInput!): Classroom
     joinClassroom(joinClassroomInput: JoinClassroomInput!): JoinClassroomOutput
     requestPass(requestPassInput: CreatePassInput!): RequestPassOutput
@@ -37,6 +35,11 @@ input CreatePassInput {
     passType: PassType
     startTime: String
     endTime: String
+}
+
+enum UserRole {
+    STUDENT
+    TEACHER
 }
 
 enum PassType {
@@ -70,35 +73,12 @@ type Pass {
 # for getUser
 type User {
     id: ID!
+    role: UserRole
     firstName: String
     lastName: String
     email: String
     phone: String
     profileImage: String
-    createdAt: String
-    updatedAt: String
-}
-
-type Student {
-    id: ID!
-    firstName: String
-    lastName: String
-    email: String
-    phone: String
-    profileImage: String
-    classrooms: [Classroom]
-    createdAt: String
-    updatedAt: String
-}
-
-type Teacher {
-    id: ID!
-    firstName: String
-    lastName: String
-    email: String
-    phone: String
-    profileImage: String
-    students: [Student]
     createdAt: String
     updatedAt: String
 }

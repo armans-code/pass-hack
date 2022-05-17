@@ -18,6 +18,7 @@ public class Converters {
                 .lastName(studentEntity.getLastName())
                 .email(studentEntity.getEmail())
                 .phone(studentEntity.getPhone())
+                .role(UserRole.STUDENT)
                 .createdAt(studentEntity.getCreatedAt().toString());
         if (!ObjectUtils.isEmpty(studentEntity.getUpdatedAt()))
             studentBuilder.updatedAt(studentEntity.getUpdatedAt().toString());
@@ -46,6 +47,7 @@ public class Converters {
                 .firstName(teacherEntity.getFirstName())
                 .lastName(teacherEntity.getLastName())
                 .email(teacherEntity.getEmail())
+                .role(UserRole.TEACHER)
                 .phone(teacherEntity.getPhone());
         if (!ObjectUtils.isEmpty(teacherEntity.getProfileImage()))
             teacherBuilder.profileImage(teacherEntity.getProfileImage());
