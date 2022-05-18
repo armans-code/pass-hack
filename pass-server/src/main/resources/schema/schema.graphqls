@@ -1,13 +1,11 @@
 type Query {
-    getTeacher: Teacher
-    getStudent: Student
+    getUser: User
     getPasses: [Pass]
     getClassrooms: [Classroom]
 }
 
 type Mutation {
-    registerStudent(registerUserInput: RegisterUserInput!): Student
-    registerTeacher(registerUserInput: RegisterUserInput!): Teacher
+    registerUser(registerUserInput: RegisterUserInput!): User
     createClassroom(createClassroomInput: CreateClassroomInput!): Classroom
     joinClassroom(joinClassroomInput: JoinClassroomInput!): JoinClassroomOutput
     requestPass(requestPassInput: CreatePassInput!): RequestPassOutput
@@ -22,6 +20,7 @@ input RegisterUserInput {
     password: String
     phone: String
     profileImage: String
+    role: UserRole
 }
 
 
@@ -36,6 +35,11 @@ input CreatePassInput {
     passType: PassType
     startTime: String
     endTime: String
+}
+
+enum UserRole {
+    STUDENT
+    TEACHER
 }
 
 enum PassType {
@@ -55,40 +59,26 @@ input CreateClassroomInput {
 
 type Pass {
     id: ID!
-    student: Student
+    student: User
     classroom: Classroom
-    teacher: Teacher
+    teacher: User
     passType: String
     revoked: Boolean
-    # Use Data Scalar in Future
     startTime: String
     endTime: String
     createdAt: String
     updatedAt: String
 }
 
-# Make Student and Teacher have Base
-
-type Student {
+# for getUser
+type User {
     id: ID!
+    role: UserRole
     firstName: String
     lastName: String
     email: String
     phone: String
     profileImage: String
-    classrooms: [Classroom]
-    createdAt: String
-    updatedAt: String
-}
-
-type Teacher {
-    id: ID!
-    firstName: String
-    lastName: String
-    email: String
-    phone: String
-    profileImage: String
-    students: [Student]
     createdAt: String
     updatedAt: String
 }
@@ -98,7 +88,7 @@ type Classroom {
     name: String
     description: String
     code: String
-    teacher: Teacher
+    teacher: User
     createdAt: String
     updatedAt: String
 }

@@ -5,20 +5,21 @@ import com.hackathon.passserver.entities.*;
 import com.hackathon.passserver.graphql.types.*;
 import org.springframework.util.ObjectUtils;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.stream.Collectors;
+import java.util.TimeZone;
 
 public class Converters {
-    public static Student convertStudent(StudentEntity studentEntity) {
-        Student.Builder studentBuilder = Student.newBuilder()
+    public static User convertStudent(StudentEntity studentEntity) {
+        User.Builder studentBuilder = User.newBuilder()
                 .id(studentEntity.getId().toString())
                 .firstName(studentEntity.getFirstName())
                 .lastName(studentEntity.getLastName())
                 .email(studentEntity.getEmail())
                 .phone(studentEntity.getPhone())
-                .classrooms(studentEntity.getClassrooms().stream().map(Converters::convertClassroom).collect(Collectors.toList()))
+                .role(UserRole.STUDENT)
                 .createdAt(studentEntity.getCreatedAt().toString());
         if (!ObjectUtils.isEmpty(studentEntity.getUpdatedAt()))
             studentBuilder.updatedAt(studentEntity.getUpdatedAt().toString());
@@ -41,12 +42,13 @@ public class Converters {
         return classroomBuilder.build();
     }
 
-    public static Teacher convertTeacher(TeacherEntity teacherEntity) {
-        Teacher.Builder teacherBuilder = Teacher.newBuilder()
+    public static User convertTeacher(TeacherEntity teacherEntity) {
+        User.Builder teacherBuilder = User.newBuilder()
                 .id(teacherEntity.getId().toString())
                 .firstName(teacherEntity.getFirstName())
                 .lastName(teacherEntity.getLastName())
                 .email(teacherEntity.getEmail())
+                .role(UserRole.TEACHER)
                 .phone(teacherEntity.getPhone());
         if (!ObjectUtils.isEmpty(teacherEntity.getProfileImage()))
             teacherBuilder.profileImage(teacherEntity.getProfileImage());
@@ -58,6 +60,7 @@ public class Converters {
                 .id(passEntity.getId().toString())
                 .classroom(convertClassroom(passEntity.getClassroom()))
                 .teacher(convertTeacher(passEntity.getTeacher()))
+                .student(convertStudent(passEntity.getStudent()))
                 .startTime(passEntity.getStartTime().toString())
                 .endTime(passEntity.getEndTime().toString())
                 .passType(passEntity.getPassType().name())
@@ -114,7 +117,10 @@ public class Converters {
 
     private static Date toDate(String dateInput) {
         try {
-            return new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse(dateInput);
+            TimeZone tz = TimeZone.getTimeZone("UTC");
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            df.setTimeZone(tz);
+            return df.parse(dateInput);
         } catch (ParseException e) {
             throw new IllegalArgumentException("Invalid Date Format");
         }

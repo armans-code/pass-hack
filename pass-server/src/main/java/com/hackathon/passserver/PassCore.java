@@ -41,14 +41,17 @@ public class PassCore {
         this.notificationService = notificationService;
     }
 
-    public Student getStudent(String authId) {
-        StudentEntity studentEntity = getStudentByAuthId(authId);
-        return Converters.convertStudent(studentEntity);
-    }
-
-    public Teacher getTeacher(String authId) {
-        TeacherEntity teacherEntity = getTeacherByAuthId(authId);
-        return Converters.convertTeacher(teacherEntity);
+    public User getUser(String authId, String role) {
+        switch(role) {
+            case "student":
+                StudentEntity studentEntity = getStudentByAuthId(authId);
+                return Converters.convertStudent(studentEntity);
+            case "teacher":
+                TeacherEntity teacherEntity = getTeacherByAuthId(authId);
+                return Converters.convertTeacher(teacherEntity);
+            default:
+                throw new IllegalArgumentException("Invalid Role");
+        }
     }
 
     public List<Pass> getPasses(String role, String authId) {
@@ -68,18 +71,22 @@ public class PassCore {
         return passEntities.stream().map(Converters::convertPass).collect(Collectors.toList());
     }
 
-    public Student registerStudent(RegisterUserInput registerStudentInput) {
-        UserRecord createdUser = authService.createStudent(registerStudentInput);
-        StudentEntity studentEntity = Converters.buildStudentEntity(registerStudentInput, createdUser.getUid());
-        StudentEntity savedStudent = studentRepository.save(studentEntity);
-        return Converters.convertStudent(savedStudent);
-    }
-
-    public Teacher registerTeacher(RegisterUserInput registerTeacherInput) {
-        UserRecord createdUser = authService.createTeacher(registerTeacherInput);
-        TeacherEntity teacherEntity = Converters.buildTeacherEntity(registerTeacherInput, createdUser.getUid());
-        TeacherEntity savedTeacher = teacherRepository.save(teacherEntity);
-        return Converters.convertTeacher(savedTeacher);
+    public User registerUser(RegisterUserInput registerUserInput) {
+        UserRecord createdUser;
+        switch (registerUserInput.getRole()) {
+            case STUDENT:
+                createdUser = authService.createStudent(registerUserInput);
+                StudentEntity studentEntity = Converters.buildStudentEntity(registerUserInput, createdUser.getUid());
+                StudentEntity savedStudent = studentRepository.save(studentEntity);
+                return Converters.convertStudent(savedStudent);
+            case TEACHER:
+                createdUser = authService.createTeacher(registerUserInput);
+                TeacherEntity teacherEntity = Converters.buildTeacherEntity(registerUserInput, createdUser.getUid());
+                TeacherEntity savedTeacher = teacherRepository.save(teacherEntity);
+                return Converters.convertTeacher(savedTeacher);
+            default:
+                throw new IllegalArgumentException("Invalid Role");
+        }
     }
 
     public Classroom createClassroom(CreateClassroomInput createClassroomInput, String authId) {
