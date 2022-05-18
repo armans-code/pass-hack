@@ -81,18 +81,22 @@ public class PassCore {
         return passEntities.stream().map(Converters::convertPass).collect(Collectors.toList());
     }
 
-    public User registerStudent(RegisterUserInput registerStudentInput) {
-        UserRecord createdUser = authService.createStudent(registerStudentInput);
-        StudentEntity studentEntity = Converters.buildStudentEntity(registerStudentInput, createdUser.getUid());
-        StudentEntity savedStudent = studentRepository.save(studentEntity);
-        return Converters.convertStudent(savedStudent);
-    }
-
-    public User registerTeacher(RegisterUserInput registerTeacherInput) {
-        UserRecord createdUser = authService.createTeacher(registerTeacherInput);
-        TeacherEntity teacherEntity = Converters.buildTeacherEntity(registerTeacherInput, createdUser.getUid());
-        TeacherEntity savedTeacher = teacherRepository.save(teacherEntity);
-        return Converters.convertTeacher(savedTeacher);
+    public User registerUser(RegisterUserInput registerUserInput) {
+        UserRecord createdUser;
+        switch (registerUserInput.getRole().toString()) {
+            case "STUDENT":
+                createdUser = authService.createStudent(registerUserInput);
+                StudentEntity studentEntity = Converters.buildStudentEntity(registerUserInput, createdUser.getUid());
+                StudentEntity savedStudent = studentRepository.save(studentEntity);
+                return Converters.convertStudent(savedStudent);
+            case "TEACHER":
+                createdUser = authService.createTeacher(registerUserInput);
+                TeacherEntity teacherEntity = Converters.buildTeacherEntity(registerUserInput, createdUser.getUid());
+                TeacherEntity savedTeacher = teacherRepository.save(teacherEntity);
+                return Converters.convertTeacher(savedTeacher);
+            default:
+                throw new IllegalArgumentException("Invalid Role");
+        }
     }
 
     public Classroom createClassroom(CreateClassroomInput createClassroomInput, String authId) {

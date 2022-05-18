@@ -22,13 +22,8 @@ public class PassMutation {
     }
 
     @DgsMutation
-    public User registerStudent(@InputArgument RegisterUserInput registerUserInput) {
-        return passCore.registerStudent(registerUserInput);
-    }
-
-    @DgsMutation
-    public User registerTeacher(@InputArgument RegisterUserInput registerUserInput) {
-        return passCore.registerTeacher(registerUserInput);
+    public User registerUser(@InputArgument RegisterUserInput registerUserInput) {
+        return passCore.registerUser(registerUserInput);
     }
 
     @DgsMutation

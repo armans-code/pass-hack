@@ -5,8 +5,7 @@ type Query {
 }
 
 type Mutation {
-    registerStudent(registerUserInput: RegisterUserInput!): User
-    registerTeacher(registerUserInput: RegisterUserInput!): User
+    registerUser(registerUserInput: RegisterUserInput!): User
     createClassroom(createClassroomInput: CreateClassroomInput!): Classroom
     joinClassroom(joinClassroomInput: JoinClassroomInput!): JoinClassroomOutput
     requestPass(requestPassInput: CreatePassInput!): RequestPassOutput
@@ -21,6 +20,7 @@ input RegisterUserInput {
     password: String
     phone: String
     profileImage: String
+    role: UserRole
 }
 
 

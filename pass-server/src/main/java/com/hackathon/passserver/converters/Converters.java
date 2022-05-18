@@ -5,10 +5,11 @@ import com.hackathon.passserver.entities.*;
 import com.hackathon.passserver.graphql.types.*;
 import org.springframework.util.ObjectUtils;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.stream.Collectors;
+import java.util.TimeZone;
 
 public class Converters {
     public static User convertStudent(StudentEntity studentEntity) {
@@ -59,6 +60,7 @@ public class Converters {
                 .id(passEntity.getId().toString())
                 .classroom(convertClassroom(passEntity.getClassroom()))
                 .teacher(convertTeacher(passEntity.getTeacher()))
+                .student(convertStudent(passEntity.getStudent()))
                 .startTime(passEntity.getStartTime().toString())
                 .endTime(passEntity.getEndTime().toString())
                 .passType(passEntity.getPassType().name())
@@ -115,7 +117,10 @@ public class Converters {
 
     private static Date toDate(String dateInput) {
         try {
-            return new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse(dateInput);
+            TimeZone tz = TimeZone.getTimeZone("UTC");
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            df.setTimeZone(tz);
+            return df.parse(dateInput);
         } catch (ParseException e) {
             throw new IllegalArgumentException("Invalid Date Format");
         }
