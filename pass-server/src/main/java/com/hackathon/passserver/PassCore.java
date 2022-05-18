@@ -54,16 +54,6 @@ public class PassCore {
         }
     }
 
-    public User getStudent(String authId) {
-        StudentEntity studentEntity = getStudentByAuthId(authId);
-        return Converters.convertStudent(studentEntity);
-    }
-
-    public User getTeacher(String authId) {
-        TeacherEntity teacherEntity = getTeacherByAuthId(authId);
-        return Converters.convertTeacher(teacherEntity);
-    }
-
     public List<Pass> getPasses(String role, String authId) {
         List<PassEntity> passEntities;
         switch (role) {
@@ -83,13 +73,13 @@ public class PassCore {
 
     public User registerUser(RegisterUserInput registerUserInput) {
         UserRecord createdUser;
-        switch (registerUserInput.getRole().toString()) {
-            case "STUDENT":
+        switch (registerUserInput.getRole()) {
+            case STUDENT:
                 createdUser = authService.createStudent(registerUserInput);
                 StudentEntity studentEntity = Converters.buildStudentEntity(registerUserInput, createdUser.getUid());
                 StudentEntity savedStudent = studentRepository.save(studentEntity);
                 return Converters.convertStudent(savedStudent);
-            case "TEACHER":
+            case TEACHER:
                 createdUser = authService.createTeacher(registerUserInput);
                 TeacherEntity teacherEntity = Converters.buildTeacherEntity(registerUserInput, createdUser.getUid());
                 TeacherEntity savedTeacher = teacherRepository.save(teacherEntity);
