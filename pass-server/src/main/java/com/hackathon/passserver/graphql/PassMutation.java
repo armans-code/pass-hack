@@ -39,6 +39,12 @@ public class PassMutation {
     }
 
     @DgsMutation
+    public LeaveClassroomOutput leaveClassroom(@InputArgument LeaveClassroomInput leaveClassroomInput, @RequestHeader("Authorization") String authorization) {
+        FirebaseToken firebaseToken = authValidator.verifyUser(authorization.split("Bearer ")[1]);
+        return passCore.leaveClassroom(leaveClassroomInput, firebaseToken.getUid());
+    }
+
+    @DgsMutation
     public Pass createPass(@InputArgument CreatePassInput createPassInput, @RequestHeader("Authorization") String authorization) {
         FirebaseToken firebaseToken = authValidator.verifyTeacher(authorization.split("Bearer ")[1]);
         return passCore.createPass(createPassInput, firebaseToken.getUid());

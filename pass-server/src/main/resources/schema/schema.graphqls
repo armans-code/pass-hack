@@ -8,7 +8,7 @@ type Mutation {
     registerUser(registerUserInput: RegisterUserInput!): User
     createClassroom(createClassroomInput: CreateClassroomInput!): Classroom
     joinClassroom(joinClassroomInput: JoinClassroomInput!): JoinClassroomOutput
-    leaveClassroom(joinClassroomInput: JoinClassroomInput!): JoinClassroomOutput
+    leaveClassroom(leaveClassroomInput: LeaveClassroomInput!): LeaveClassroomOutput
     requestPass(requestPassInput: CreatePassInput!): RequestPassOutput
     createPass(createPassInput: CreatePassInput!): Pass
     revokePass(passId: ID!): Pass
@@ -95,6 +95,15 @@ type Classroom {
 
 input JoinClassroomInput {
     classCode: String
+}
+
+input LeaveClassroomInput {
+    classCode: String
+}
+
+type LeaveClassroomOutput {
+    studentId: ID
+    status: String
 }
 
 type JoinClassroomOutput {

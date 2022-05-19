@@ -49,6 +49,7 @@ public class NotificationService {
     }
 
     public void joinClass(PhoneNumber phoneNumber, String studentName, String className) {
+        Twilio.init(accountSid, authToken);
         Message message = Message.creator(
                 phoneNumber,
                 new PhoneNumber("+15005550006"),
@@ -57,6 +58,7 @@ public class NotificationService {
     }
 
     public void leaveClass(PhoneNumber phoneNumber, String studentName, String className) {
+        Twilio.init(accountSid, authToken);
         Message message = Message.creator(
                 phoneNumber,
                 new PhoneNumber("+15005550006"),

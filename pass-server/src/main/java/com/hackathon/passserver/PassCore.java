@@ -112,16 +112,17 @@ public class PassCore {
                 .build();
     }
 
-    public JoinClassroomOutput leaveClassroom(JoinClassroomInput joinClassroomInput, String authId) {
+    @Transactional
+    public LeaveClassroomOutput leaveClassroom(LeaveClassroomInput leaveClassroomInput, String authId) {
         StudentEntity studentEntity = getStudentByAuthId(authId);
-        ClassroomEntity classroomEntity = classroomRepository.getByCode(joinClassroomInput.getClassCode());
+        ClassroomEntity classroomEntity = classroomRepository.getByCode(leaveClassroomInput.getClassCode());
         classroomEntity.getStudents().remove(studentEntity);
         notificationService.leaveClass(
                 new PhoneNumber(classroomEntity.getTeacher().getPhone()),
                 studentEntity.getFirstName(),
                 classroomEntity.getName()
         );
-        return JoinClassroomOutput.newBuilder()
+        return LeaveClassroomOutput.newBuilder()
                 .status("REMOVED")
                 .studentId(studentEntity.getId().toString())
                 .build();
