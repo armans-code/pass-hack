@@ -118,7 +118,7 @@ public class Converters {
     private static Date toDate(String dateInput) {
         try {
             TimeZone tz = TimeZone.getTimeZone("UTC");
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
             df.setTimeZone(tz);
             return df.parse(dateInput);
         } catch (ParseException e) {

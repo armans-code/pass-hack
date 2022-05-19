@@ -8,6 +8,7 @@ type Mutation {
     registerUser(registerUserInput: RegisterUserInput!): User
     createClassroom(createClassroomInput: CreateClassroomInput!): Classroom
     joinClassroom(joinClassroomInput: JoinClassroomInput!): JoinClassroomOutput
+    leaveClassroom(joinClassroomInput: JoinClassroomInput!): JoinClassroomOutput
     requestPass(requestPassInput: CreatePassInput!): RequestPassOutput
     createPass(createPassInput: CreatePassInput!): Pass
     revokePass(passId: ID!): Pass
@@ -22,7 +23,6 @@ input RegisterUserInput {
     profileImage: String
     role: UserRole
 }
-
 
 type RequestPassOutput {
     teacherId: ID!

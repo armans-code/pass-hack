@@ -101,8 +101,28 @@ public class PassCore {
         StudentEntity studentEntity = getStudentByAuthId(authId);
         ClassroomEntity classroomEntity = classroomRepository.getByCode(joinClassroomInput.getClassCode());
         classroomEntity.getStudents().add(studentEntity);
+        notificationService.joinClass(
+                new PhoneNumber(classroomEntity.getTeacher().getPhone()),
+                studentEntity.getFirstName(),
+                classroomEntity.getName()
+        );
         return JoinClassroomOutput.newBuilder()
                 .status("ADDED")
+                .studentId(studentEntity.getId().toString())
+                .build();
+    }
+
+    public JoinClassroomOutput leaveClassroom(JoinClassroomInput joinClassroomInput, String authId) {
+        StudentEntity studentEntity = getStudentByAuthId(authId);
+        ClassroomEntity classroomEntity = classroomRepository.getByCode(joinClassroomInput.getClassCode());
+        classroomEntity.getStudents().remove(studentEntity);
+        notificationService.leaveClass(
+                new PhoneNumber(classroomEntity.getTeacher().getPhone()),
+                studentEntity.getFirstName(),
+                classroomEntity.getName()
+        );
+        return JoinClassroomOutput.newBuilder()
+                .status("REMOVED")
                 .studentId(studentEntity.getId().toString())
                 .build();
     }
@@ -130,6 +150,11 @@ public class PassCore {
         ClassroomEntity classroomEntity = getClassroomById(UUID.fromString(createPassInput.getClassroomId()));
         PassEntity passEntity = Converters.buildPassEntity(createPassInput, teacherEntity, classroomEntity, studentEntity);
         PassEntity savedPassEntity = passRepository.save(passEntity);
+        notificationService.createPass(
+                new PhoneNumber(studentEntity.getPhone()),
+                studentEntity.getFirstName(),
+                passEntity
+        );
         return Converters.convertPass(savedPassEntity);
     }
 
@@ -137,6 +162,10 @@ public class PassCore {
         PassEntity passEntity = getPassById(passId);
         passEntity.setRevoked(true);
         PassEntity updatedPass = passRepository.save(passEntity);
+        notificationService.revokePass(
+                passEntity
+        );
+
         return Converters.convertPass(updatedPass);
     }
 
