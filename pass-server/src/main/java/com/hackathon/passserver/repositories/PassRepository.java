@@ -10,9 +10,9 @@ import java.util.UUID;
 
 @Repository
 public interface PassRepository extends JpaRepository<PassEntity, UUID> {
-    @Query(nativeQuery = true, value = "SELECT * FROM pass WHERE p.student_id = :studentId")
+    @Query(nativeQuery = true, value = "SELECT * FROM pass p WHERE p.student_id = :studentId")
     List<PassEntity> getAllByStudentId(UUID studentId);
 
-    @Query(nativeQuery = true, value = "SELECT * FROM pass WHERE p.teacher_id = :teacherId")
+    @Query(nativeQuery = true, value = "SELECT * FROM pass p WHERE p.teacher_id = :teacherId")
     List<PassEntity> getAllByTeacherId(UUID teacherId);
 }
